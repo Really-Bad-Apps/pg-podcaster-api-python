@@ -1,0 +1,44 @@
+[project]
+name = "pg-podcaster-api-python"
+version = "0.0.1"
+authors = [
+  { name="Jason Mazza" },
+]
+description = "Python client library for the Podcast Guru podcaster portal REST API"
+keywords = ["podcast", "podcastguru", "api", "client"]
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+# CRITICAL — git deps MUST use TOKEN-FREE URLs here. Never embed {env:CR_PAT}:
+# hatchling expands it at wheel build time and bakes the live PAT into the
+# wheel's Requires-Dist metadata. Auth belongs at install time.
+dependencies = [
+  "pg-podcaster-models @ git+https://github.com/Really-Bad-Apps/pg-podcaster-models.git",
+  "requests>=2.32,<3",
+  "httpx>=0.27,<1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+# Required because pg-podcaster-models is a direct URL reference.
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pg_podcaster_api"]
+
+[tool.pytest.ini_options]
+# REQUIRED. The venv lives at the project root (bin/, lib/, include/), so an
+# unconstrained `pytest` collects the venv's own site-packages tests.
+testpaths = ["tests"]
+
+[project.urls]
+Homepage = "https://github.com/Really-Bad-Apps/pg-podcaster-api-python"
+Issues = "https://github.com/Really-Bad-Apps/pg-podcaster-api-python/issues"
