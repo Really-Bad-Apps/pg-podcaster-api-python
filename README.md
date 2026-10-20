@@ -33,14 +33,21 @@ config = ClientConfig(base_url="https://podcaster.podcastguru.io/api/v1", api_ke
 
 with PgPodcasterClient(config) as client:
     print(client.health())
+    print(client.dashboard().generated_at)
 
 async def main() -> None:
     async with AsyncPgPodcasterClient(config) as client:
         print(await client.health())
+        summary = await client.dashboard()
+        print(summary.podcasts)
 ```
 
 Errors are raised as subclasses of `PgPodcasterError`; HTTP failures carry
 `status_code` and the response `body`.
+
+`dashboard()` returns the shared `pg_podcaster_models.DashboardSummary`
+dataclass. The bearer must be a valid Aegis token in v1; API-key issuance is
+not available yet.
 
 ## Development
 

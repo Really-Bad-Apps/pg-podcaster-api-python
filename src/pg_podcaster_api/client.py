@@ -3,6 +3,7 @@
 from typing import Any, Dict
 
 import requests
+from pg_podcaster_models import DashboardSummary
 
 from .config import ClientConfig
 from .exceptions import raise_for_status
@@ -33,3 +34,7 @@ class PgPodcasterClient:
     def health(self) -> Dict[str, Any]:
         """GET /health — liveness check, no auth required."""
         return self._get("health")
+
+    def dashboard(self) -> DashboardSummary:
+        """GET /dashboard — requires the caller's bearer token."""
+        return DashboardSummary.from_dict(self._get("dashboard"))
