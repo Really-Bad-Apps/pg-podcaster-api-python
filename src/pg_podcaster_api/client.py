@@ -1,9 +1,10 @@
 """Synchronous client (requests)."""
 
 from typing import Any, Dict
+from urllib.parse import quote
 
 import requests
-from pg_podcaster_models import DashboardSummary
+from pg_podcaster_models import DashboardSummary, PodcastLookup
 
 from .config import ClientConfig
 from .exceptions import raise_for_status
@@ -38,3 +39,7 @@ class PgPodcasterClient:
     def dashboard(self) -> DashboardSummary:
         """GET /dashboard — requires the caller's bearer token."""
         return DashboardSummary.from_dict(self._get("dashboard"))
+
+    def podcast(self, podcast_id: str) -> PodcastLookup:
+        """Look up a podcast's name/artwork using its Apple or canonical ID."""
+        return PodcastLookup.from_dict(self._get(f"podcasts/{quote(podcast_id, safe='')}"))

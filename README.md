@@ -81,3 +81,10 @@ MIT License
 ## Author
 
 Jason Mazza
+
+## Podcast metadata
+
+`client.podcast(podcast_id)` (or `await client.podcast(podcast_id)` for the
+async client) returns a shared `PodcastLookup`. A pending result includes
+`retry_after` seconds. Authentication and HTTP errors use the existing client
+exceptions. Requires the shared models package 0.0.3 or later.
